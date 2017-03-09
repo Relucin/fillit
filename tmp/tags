@@ -1,0 +1,5 @@
+Mmain	main.c	/^int			main(int argc, char **argv)$/
+block_check	main.c	/^e_block		block_check(const char *block, int rd)$/
+build_board	main.c	/^void		build_board(char *board)$/
+place_board	main.c	/^void		place_board(int loc, int block, char *board)/
+verify_block	main.c	/^e_block		verify_block(int b)$/
