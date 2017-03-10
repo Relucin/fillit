@@ -6,7 +6,7 @@
 /*   By: bmontoya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/08 00:46:30 by bmontoya          #+#    #+#             */
-/*   Updated: 2017/03/09 21:16:08 by bmontoya         ###   ########.fr       */
+/*   Updated: 2017/03/09 22:26:13 by bmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	print_board(Board board)
 		while (subi < BOARD_SIZE)
 		{
 			byte[subi++] = (board.s[i] % 2) ? '#' : '.';
-			board.s[i] >>= 1;	
+			board.s[i] >>= 1;
 		}
 		ft_putstr(byte);
 		i++;
@@ -67,7 +67,7 @@ unsigned long long nbrs[][2] = {{33825, 281479271743489ULL}, //I_TALL0
 								{225, 458753}, //J_UP7
 								{1059, 4295032835ULL}, //J_RIGHT8
 								{135,262151}, //J_DOWN9
-								{3105,12884967425ULL}, //L_RIGHT10 
+								{3105,12884967425ULL}, //L_RIGHT10
 								{39,65543}, //L_DOWN11
 								{2115,8590065667ULL}, //L_LEFT12
 								{57,114689}, //L_UP13
@@ -83,20 +83,18 @@ unsigned long long	tetrimino_check(char *tet, int rd)
 	int start = 0;
 	int count = 0;
 	int test = 0;
-	int num = 0;
+	int num = 1;
 	while(*tet)
 	{
 		if (*tet == '#')
 			start += (1 << count);
-		else if (*tet == '\n' && (num + 1) % 5)
-			ft_putendl(ft_itoa(num));
-		//ft_putendl(ft_itoa(num));
+		else if ((*tet == '\n' && num % 5 && num != rd) || *tet != '.')
+			return (0);
 		if (start > 0)
 			++count;
 		tet++;
 		num++;
 	}
-	//ft_putendl(ft_itoa(num));
 	while (test < 19)
 	{
 		if (nbrs[test][0] == start)
