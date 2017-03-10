@@ -6,7 +6,7 @@
 /*   By: bmontoya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/08 00:46:30 by bmontoya          #+#    #+#             */
-/*   Updated: 2017/03/09 15:06:14 by bmontoya         ###   ########.fr       */
+/*   Updated: 2017/03/09 21:16:08 by bmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,36 +56,61 @@ void	print_board(Board board)
 	}
 	ft_putchar('\n');
 }
-void	tetrimino_check(char *tet)
+
+unsigned long long nbrs[][2] = {{33825, 281479271743489ULL}, //I_TALL0
+								{15, 15}, //I_FLAT1
+								{71, 131079}, //T_DOWN2
+								{113, 229377}, //T_UP3
+								{1073, 4295065601ULL}, //T_LEFT4
+								{1121, 4295163905ULL}, //T_RIGHT5
+								{1569, 6442516481ULL}, //J_LEFT6
+								{225, 458753}, //J_UP7
+								{1059, 4295032835ULL}, //J_RIGHT8
+								{135,262151}, //J_DOWN9
+								{3105,12884967425ULL}, //L_RIGHT10 
+								{39,65543}, //L_DOWN11
+								{2115,8590065667ULL}, //L_LEFT12
+								{57,114689}, //L_UP13
+								{99,196611}, //O14
+								{51,98307}, //S_FLAT15
+								{2145,8590131201}, //S_TALL16
+								{195,393219}, //Z_FLAT17
+								{561,2147581953ULL} //Z_TALL18
+								};
+
+unsigned long long	tetrimino_check(char *tet, int rd)
 {
-	long long nbrs[][2] = {{33825, 65537}, //I_TALL
-							};
 	int start = 0;
 	int count = 0;
-	ft_putstr(tet);
+	int test = 0;
+	int num = 0;
 	while(*tet)
 	{
 		if (*tet == '#')
 			start += (1 << count);
+		else if (*tet == '\n' && (num + 1) % 5)
+			ft_putendl(ft_itoa(num));
+		//ft_putendl(ft_itoa(num));
 		if (start > 0)
 			++count;
 		tet++;
+		num++;
 	}
-	ft_putnbr(start);
-	ft_putendl("");
-	Board test;
-	Piece ptest;
-	ft_memset(test.c, 0,sizeof(test.c));
-	ptest.place = 1ULL + (1ULL << BOARD_SIZE) + (1ULL << (BOARD_SIZE *2)) + (1ULL << (BOARD_SIZE * 3));
-	ptest.height = 4;
-	ft_putendl(ft_itoa(ptest.place));
-	place_piece(&test,ptest ,0);
-	print_board(test);
+	//ft_putendl(ft_itoa(num));
+	while (test < 19)
+	{
+		if (nbrs[test][0] == start)
+			return (nbrs[test][1]);
+		test++;
+	}
+	return (0);
 }
 
 int		main(int argc, char **argv)
 {
 	char	tet[BUF];
+	unsigned long long pieces[27];
+	int		pn = 0;
 	int		file;
 	int		rd;
 
@@ -95,7 +120,9 @@ int		main(int argc, char **argv)
 		while ((rd = read(file, tet, BUF - 1)) >= BUF -2)
 		{
 			tet[rd] = '\0';
-			tetrimino_check(tet);
+			if(!(pieces[pn++] = tetrimino_check(tet, rd)))
+				return (0);
 		}
+		pieces[pn] = 0;
 	}
 }

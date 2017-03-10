@@ -1,1 +1,1 @@
-gcc main.c -Llibft/ -lft && ./a.out tests/t.fillit
+gcc main.c -Llibft/ -lft && ./a.out tests/test.fillit
