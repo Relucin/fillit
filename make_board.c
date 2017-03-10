@@ -6,16 +6,42 @@
 /*   By: sbogar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 21:49:14 by sbogar            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2017/03/09 23:53:45 by bmontoya         ###   ########.fr       */
-=======
-/*   Updated: 2017/03/10 00:00:15 by sbogar           ###   ########.fr       */
->>>>>>> e117b1db6124f892fb0750e53c25a2805d8311cf
+/*   Updated: 2017/03/10 00:33:32 by bmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 #include "libft/libft.h"
+
+void	place_piece(Board *board, Piece piece, int pos)
+{
+	uint64_t *place;
+
+	place = (uint64_t*)(board->s + (pos / BOARD_SIZE));
+	*place = *place ^ (piece.id << (pos % BOARD_SIZE));
+}
+
+void	print_board(Board board)
+{
+	int		i = 0;
+	char	byte[BOARD_SIZE + 1];
+	int 	subi;
+	byte[BOARD_SIZE] = '\0';
+	while (i < BOARD_SIZE)
+	{
+		if (i)
+			ft_putchar('\n');
+		subi = 0;
+		while (subi < BOARD_SIZE)
+		{
+			byte[subi++] = (board.s[i] % 2) ? '#' : '.';
+			board.s[i] >>= 1;
+		}
+		ft_putstr(byte);
+		i++;
+	}
+	ft_putchar('\n');
+}
 
 void	make_hash(void)
 {
@@ -40,7 +66,7 @@ void	make_hash(void)
 	ft_hash_insert(561,2147581953ULL); //Z_TALL18
 }
 
-Board	*make_board(void)
+Board	*make_board(int npieces)
 {
 	Board *board;
 	if (!(board = malloc(sizeof(board))))
@@ -48,6 +74,5 @@ Board	*make_board(void)
 	ft_bzero(map,sizeof(map));
 	ft_bzero(board->s, sizeof(board->s));
 	ft_bzero(board->p, sizeof(board->p));
-	make_hash();
 	return (board);
 }
