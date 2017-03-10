@@ -6,59 +6,47 @@
 /*   By: sbogar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 16:44:17 by sbogar            #+#    #+#             */
-/*   Updated: 2017/03/09 22:39:53 by sbogar           ###   ########.fr       */
+/*   Updated: 2017/03/09 23:45:44 by bmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <stdio.h>
-#include <string.h>
+
 #include <stdlib.h>
-#define SIZE 26
-
-typedef piece{
-//	long long		key;
-	unsigned long long	place;
-//	long long		id;
-	unsigned int	height;
-}		Piece;
+#include "fillit.h"
 
 
-Piece *map[SIZE];
-
-long long			get_hash_key(unsigned long long place)
+int		get_hash_key(int key)
 {
-	return (place % SIZE);
+	return (key % MAX_TETRIMINOS);
 }
 
-void				ft_hash_insert(unsigned long long place, unsigned int height)
+void	ft_hash_insert(int key, uint64_t id)
 {
-	struct piece	*res;
-	long long		index;
+	Piece	*piece;
+	int		index;
 
-	res = (struct piece*)malloc(sizeof(Piece));
-	res->height = height;
-	res->place = place;
-
-	index = get_hash_key(place);
-	while (map[index] && map[index]->place != -1)
+	piece = malloc(sizeof(Piece));
+	piece->key = key;
+	piece->id = id;
+	index = get_hash_key(key);
+	while (map[index])// && map[index]->key != -1)
 	{
 		++index;
-		index %= SIZE;
+		index %= HASH_SIZE;
 	}
-	map[index] = res;
+	map[index] = piece;
 }
 
-struct piece	*ft_hash_search(unsigned long long place)
+Piece	*ft_hash_search(int key)
 {
 	int	index;
 
-	index = get_hash_key(place);
-
+	index = get_hash_key(key);
 	while(map[index])
 	{
 		if(map[index] != NULL)
 			return (map[index]);
 		++index;
-		index %= SIZE;
+		index %= HASH_SIZE;
 	}
 	return (NULL);
 }
