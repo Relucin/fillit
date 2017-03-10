@@ -6,7 +6,7 @@
 /*   By: bmontoya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/08 00:46:30 by bmontoya          #+#    #+#             */
-/*   Updated: 2017/03/09 21:16:08 by bmontoya         ###   ########.fr       */
+/*   Updated: 2017/03/09 22:41:06 by sbogar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef union	board {
 	unsigned short		s[BOARD_SIZE];
 	unsigned char		c[BOARD_SIZE * 2];
 }				Board;
+
 void	place_piece(Board *board, Piece piece, int pos)// int locx, int locy
 {
 	unsigned long long *place;
@@ -35,6 +36,7 @@ void	place_piece(Board *board, Piece piece, int pos)// int locx, int locy
 	place = (unsigned long long*)(board->s + (pos / BOARD_SIZE));//locx);
 	*place = *place ^ (piece.place << (pos % BOARD_SIZE)); //locy);
 }
+
 void	print_board(Board board)
 {
 	int		i = 0;
@@ -105,17 +107,22 @@ unsigned long long	tetrimino_check(char *tet, int rd)
 	}
 	return (0);
 }
-
+ 
 int		main(int argc, char **argv)
 {
-	char	tet[BUF];
-	unsigned long long pieces[27];
-	int		pn = 0;
-	int		file;
-	int		rd;
+	char				tet[BUF];
+	unsigned long long 	pieces[27];
+	int					pn = 0;
+	int					file;
+	int					rd;
+	struct piece		**map;
 
 	if (argc == 2)
 	{
+		Board board;
+		Piece piece;
+
+		ft_bzero(board);
 		file = open(argv[1], O_RDONLY);
 		while ((rd = read(file, tet, BUF - 1)) >= BUF -2)
 		{
