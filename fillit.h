@@ -6,7 +6,7 @@
 /*   By: bmontoya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 22:55:40 by bmontoya          #+#    #+#             */
-/*   Updated: 2017/03/10 19:15:30 by bmontoya         ###   ########.fr       */
+/*   Updated: 2017/03/10 21:32:11 by bmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@ Board	*make_board(int npieces);
 void	solver(Piece **pieces, int npieces);
 void	print_board(Board board);
 t_bool	place_piece(Board *board, Piece piece, int pos);
+void	resize_board(Board *board);
 void	make_hash(void);
 #endif
