@@ -6,7 +6,7 @@
 /*   By: bmontoya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 22:55:40 by bmontoya          #+#    #+#             */
-/*   Updated: 2017/03/10 00:52:38 by bmontoya         ###   ########.fr       */
+/*   Updated: 2017/03/10 19:15:30 by bmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 # define BOARD_SIZE 16
 # define BUF 22
 
-typedef unsigned long long uint64_t;
+typedef unsigned long long	uint64_t;
+typedef unsigned char		t_bool;
 typedef struct	piece{
 	int			key;
 	uint64_t	id;
@@ -32,6 +33,6 @@ Piece	*ft_hash_search(int key);
 Board	*make_board(int npieces);
 void	solver(Piece **pieces, int npieces);
 void	print_board(Board board);
-void	place_piece(Board *board, Piece piece, int pos);
+t_bool	place_piece(Board *board, Piece piece, int pos);
 void	make_hash(void);
 #endif

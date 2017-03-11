@@ -6,19 +6,24 @@
 /*   By: sbogar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 21:49:14 by sbogar            #+#    #+#             */
-/*   Updated: 2017/03/10 00:33:32 by bmontoya         ###   ########.fr       */
+/*   Updated: 2017/03/10 19:15:03 by bmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 #include "libft/libft.h"
 
-void	place_piece(Board *board, Piece piece, int pos)
+t_bool	place_piece(Board *board, Piece piece, int pos)
 {
-	uint64_t *place;
-
-	place = (uint64_t*)(board->s + (pos / BOARD_SIZE));
-	*place = *place ^ (piece.id << (pos % BOARD_SIZE));
+	uint64_t *p;
+	uint64_t p_num;
+	
+	p_num = piece.id << (pos % BOARD_SIZE);
+	p = (uint64_t*)(board->s + (pos / BOARD_SIZE));
+	if (~(*p ^ p_num) & (*p | p_num))
+		return (0);
+	*p = *p ^ p_num;
+	return (1);
 }
 
 void	print_board(Board board)
@@ -45,6 +50,7 @@ void	print_board(Board board)
 
 void	make_hash(void)
 {
+	ft_bzero(map,sizeof(map));
 	ft_hash_insert(33825, 281479271743489ULL);	//I_TALL0
 	ft_hash_insert(15, 15); //I_FLAT1
 	ft_hash_insert(71, 131079); //T_DOWN2
@@ -71,7 +77,6 @@ Board	*make_board(int npieces)
 	Board *board;
 	if (!(board = malloc(sizeof(board))))
 		return (0);
-	ft_bzero(map,sizeof(map));
 	ft_bzero(board->s, sizeof(board->s));
 	ft_bzero(board->p, sizeof(board->p));
 	return (board);

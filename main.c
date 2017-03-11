@@ -6,7 +6,7 @@
 /*   By: bmontoya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/08 00:46:30 by bmontoya          #+#    #+#             */
-/*   Updated: 2017/03/10 00:55:43 by bmontoya         ###   ########.fr       */
+/*   Updated: 2017/03/10 19:01:06 by bmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,44 +17,84 @@
 #include "libft/libft.h"
 #include "fillit.h"
 
+/*
+**                       _oo0oo_
+**                      o8888888o
+**                      88" . "88
+**                      (| -_- |)
+**                      0\  =  /0
+**                    ___/`---'\___
+**                  .' \\|     |// '.
+**                 / \\|||  :  |||// \
+**                / _||||| -:- |||||- \
+**               |   | \\\  -  /// |   |
+**               | \_|  ''\---/''  |_/ |
+**               \  .-\__  '-'  ___/-. /
+**             ___'. .'  /--.--\  `. .'___
+**          ."" '<  `.___\_<|>_/___.' >' "".
+**         | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+**         \  \ `_.   \_ __\ /__ _/   .-` /  /
+**     =====`-.____`.___ \_____/___.-`___.-'=====
+**                       `=---='
+**
+**
+**     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**
+**               佛祖保佑         永无BUG
+*/
+
 Piece	*tetrimino_check(char *tet, int rd)
 {
-	int start = 0;
-	int count = 0;
-	int num = 1;
-	while(*tet)
+	int val;
+	int shift;
+	int loc;
+
+	val = 0;
+	shift = 0;
+	loc = 0;
+	tet[rd] = '\0';
+	while (tet[loc])
 	{
-		if (*tet == '#')
-			start += (1 << count);
-		else if ((*tet == '\n' && num % 5 && num != rd) || (*tet != '\n' &&*tet != '.'))
+		if (tet[loc] == '#')
+			val += 1 << shift;
+		else if (tet[loc] == '\n')
+		{
+			if ((loc + 1) % 5 && !(rd == BUF - 1 && loc == BUF - 2))
+				return (0);
+		}
+		else if (tet[loc] != '.')
 			return (0);
-		if (start > 0)
-			++count;
-		tet++;
-		num++;
+		if (val)
+			++shift;
+		++loc;
 	}
-	return (ft_hash_search(start));
+	return (ft_hash_search(val));
 }
 
 int		main(int argc, char **argv)
 {
 	char	tet[BUF];
-	Piece 	*pieces[27];
-	int		pn = 0;
+	Piece	*pieces[27];
+	int		pn;
 	int		file;
 	int		rd;
 
+	pn = 0;
 	if (argc == 2)
 	{
 		make_hash();
 		file = open(argv[1], O_RDONLY);
-		while ((rd = read(file, tet, BUF - 1)) >= BUF -2)
+		while ((rd = read(file, tet, BUF - 1)) == BUF - 1)
 		{
-			tet[rd] = '\0';
-			if(!(pieces[pn++] = tetrimino_check(tet, rd)))
+			if (!(pieces[pn++] = tetrimino_check(tet, rd)))
 				return (0);
 		}
-		pieces[pn] = 0;
-		solver(pieces, pn);
+		if (rd == BUF - 2)
+		{
+			if (!(pieces[pn++] = tetrimino_check(tet, rd)))
+				return (0);
+			pieces[pn] = 0;
+			solver(pieces, pn);
+		}
 	}
 }
