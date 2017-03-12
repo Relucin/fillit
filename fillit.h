@@ -6,7 +6,7 @@
 /*   By: bmontoya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 22:55:40 by bmontoya          #+#    #+#             */
-/*   Updated: 2017/03/10 21:32:11 by bmontoya         ###   ########.fr       */
+/*   Updated: 2017/03/12 01:28:59 by bmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,22 @@
 
 typedef unsigned long long	uint64_t;
 typedef unsigned char		t_bool;
+typedef struct	piece_c{
+	char		let;
+	uint64_t	id;
+	int			bpos;
+	int			lpos;
+}
 typedef struct	piece{
 	int			key;
 	uint64_t	id;
 }				Piece;
 typedef struct	board {
 	unsigned short		s[BOARD_SIZE];
-	int					p[BOARD_SIZE * BOARD_SIZE];
+	int					dim;
+	int					lpos;
+	int					solved;
+	unsigned short		ss[BOARD_SIZE];
 }				Board;
 Piece *map[HASH_SIZE];
 void	ft_hash_insert(int key, uint64_t id);
@@ -35,5 +44,7 @@ void	solver(Piece **pieces, int npieces);
 void	print_board(Board board);
 t_bool	place_piece(Board *board, Piece piece, int pos);
 void	resize_board(Board *board);
+void	remove_piece(Board *board, Piece piece, int pos);
+t_bool	compare_board(Board *board);
 void	make_hash(void);
 #endif

@@ -6,7 +6,7 @@
 /*   By: bmontoya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/08 00:46:30 by bmontoya          #+#    #+#             */
-/*   Updated: 2017/03/10 19:01:06 by bmontoya         ###   ########.fr       */
+/*   Updated: 2017/03/11 23:08:42 by bmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,16 +74,17 @@ Piece	*tetrimino_check(char *tet, int rd)
 int		main(int argc, char **argv)
 {
 	char	tet[BUF];
-	Piece	*pieces[27];
+	Piece	**pieces;
 	int		pn;
 	int		file;
 	int		rd;
 
+	pieces = (Piece**)malloc(sizeof(*pieces) * 27);
 	pn = 0;
 	if (argc == 2)
 	{
 		make_hash();
-		file = open(argv[1], O_RDONLY);
+		file = open(argv[1], O_RDONLY);//TODO Throw an error
 		while ((rd = read(file, tet, BUF - 1)) == BUF - 1)
 		{
 			if (!(pieces[pn++] = tetrimino_check(tet, rd)))
@@ -91,7 +92,7 @@ int		main(int argc, char **argv)
 		}
 		if (rd == BUF - 2)
 		{
-			if (!(pieces[pn++] = tetrimino_check(tet, rd)))
+			if (!(pieces[pn++] = tetrimino_check(tet, rd)))//TODO Check that pn <= 26
 				return (0);
 			pieces[pn] = 0;
 			solver(pieces, pn);

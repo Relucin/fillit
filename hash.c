@@ -6,7 +6,7 @@
 /*   By: sbogar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 16:44:17 by sbogar            #+#    #+#             */
-/*   Updated: 2017/03/10 19:58:01 by bmontoya         ###   ########.fr       */
+/*   Updated: 2017/03/11 17:04:50 by bmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	make_hash(void)
 
 int		get_hash_key(int key)
 {
-	return (key % MAX_TETRIMINOS);
+	return (key % MAX_TETRIMINOS);//TODO Change to hash_size???
 }
 
 void	ft_hash_insert(int key, uint64_t id)
