@@ -6,7 +6,7 @@
 /*   By: bmontoya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 22:55:40 by bmontoya          #+#    #+#             */
-/*   Updated: 2017/03/12 01:28:59 by bmontoya         ###   ########.fr       */
+/*   Updated: 2017/03/12 16:33:02 by bmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ typedef struct	piece_c{
 	char		let;
 	uint64_t	id;
 	int			bpos;
-	int			lpos;
-}
+}				Piece_c;
 typedef struct	piece{
 	int			key;
 	uint64_t	id;
@@ -40,11 +39,11 @@ Piece *map[HASH_SIZE];
 void	ft_hash_insert(int key, uint64_t id);
 Piece	*ft_hash_search(int key);
 Board	*make_board(int npieces);
-void	solver(Piece **pieces, int npieces);
+void	solver(Piece_c **pieces, int npieces);
 void	print_board(Board board);
-t_bool	place_piece(Board *board, Piece piece, int pos);
+t_bool	place_piece(Board *board, Piece_c piece, int pos);
 void	resize_board(Board *board);
-void	remove_piece(Board *board, Piece piece, int pos);
+void	remove_piece(Board *board, Piece_c piece, int pos);
 t_bool	compare_board(Board *board);
 void	make_hash(void);
 #endif

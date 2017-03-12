@@ -6,7 +6,7 @@
 /*   By: sbogar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 21:49:14 by sbogar            #+#    #+#             */
-/*   Updated: 2017/03/12 00:43:14 by bmontoya         ###   ########.fr       */
+/*   Updated: 2017/03/12 16:38:15 by bmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	set_board_dim(Board *board, int dim)
 		ft_memset(board->s + row++, 255,sizeof(board->s));
 }
 
-void	remove_piece(Board *board, Piece piece, int pos)
+void	remove_piece(Board *board, Piece_c piece, int pos)
 {
 	uint64_t *p;
 	uint64_t p_num;
@@ -36,7 +36,7 @@ void	remove_piece(Board *board, Piece piece, int pos)
 	*p = *p ^ p_num;
 }
 
-t_bool	place_piece(Board *board, Piece piece, int pos)
+t_bool	place_piece(Board *board, Piece_c piece, int pos)
 {
 	uint64_t *p;
 	uint64_t p_num;
@@ -73,8 +73,8 @@ void	print_board(Board board)
 		subi = 0;
 		while (subi < board.dim)
 		{
-			byte[subi++] = (board.ss[i] % 2) ? '#' : '.';
-			board.ss[i] >>= 1;
+			byte[subi++] = (board.s[i] % 2) ? '#' : '.';
+			board.s[i] >>= 1;
 		}
 		ft_putstr(byte);
 		i++;

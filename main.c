@@ -6,7 +6,7 @@
 /*   By: bmontoya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/08 00:46:30 by bmontoya          #+#    #+#             */
-/*   Updated: 2017/03/11 23:08:42 by bmontoya         ###   ########.fr       */
+/*   Updated: 2017/03/12 16:30:18 by bmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,21 @@
 **               佛祖保佑         永无BUG
 */
 
-Piece	*tetrimino_check(char *tet, int rd)
+Piece_c	*make_unique_piece_c(Piece *piece, int pn)
+{
+	Piece_c *c_piece;
+
+	if (!piece)
+		return (0);
+	if (!(c_piece = malloc(sizeof(Piece_c))))
+		return (0);
+	c_piece->id = piece->id;
+	c_piece->bpos = 0;
+	c_piece->let = 'A' + pn;
+	return (c_piece);
+}
+
+Piece_c	*tetrimino_check(char *tet, int rd, int pn)
 {
 	int val;
 	int shift;
@@ -68,18 +82,18 @@ Piece	*tetrimino_check(char *tet, int rd)
 			++shift;
 		++loc;
 	}
-	return (ft_hash_search(val));
+	return (make_unique_piece_c(ft_hash_search(val), pn));
 }
 
 int		main(int argc, char **argv)
 {
 	char	tet[BUF];
-	Piece	**pieces;
+	Piece_c	**pieces;
 	int		pn;
 	int		file;
 	int		rd;
 
-	pieces = (Piece**)malloc(sizeof(*pieces) * 27);
+	pieces = (Piece_c**)malloc(sizeof(*pieces) * 27);
 	pn = 0;
 	if (argc == 2)
 	{
@@ -87,14 +101,15 @@ int		main(int argc, char **argv)
 		file = open(argv[1], O_RDONLY);//TODO Throw an error
 		while ((rd = read(file, tet, BUF - 1)) == BUF - 1)
 		{
-			if (!(pieces[pn++] = tetrimino_check(tet, rd)))
+			if (!(pieces[pn] = tetrimino_check(tet, rd, pn)))
 				return (0);
+			++pn;
 		}
 		if (rd == BUF - 2)
 		{
-			if (!(pieces[pn++] = tetrimino_check(tet, rd)))//TODO Check that pn <= 26
+			if (!(pieces[pn] = tetrimino_check(tet, rd, pn)))//TODO Check that pn <= 26
 				return (0);
-			pieces[pn] = 0;
+			pieces[++pn] = 0;
 			solver(pieces, pn);
 		}
 	}
