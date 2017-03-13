@@ -6,7 +6,7 @@
 /*   By: bmontoya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/10 00:26:57 by bmontoya          #+#    #+#             */
-/*   Updated: 2017/03/12 16:38:14 by bmontoya         ###   ########.fr       */
+/*   Updated: 2017/03/12 16:52:35 by sbogar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_bool	rec_solver(Board *board, Piece_c **pieces)
 	pos = 0;
 	while (pos < board->lpos)
 	{
-		while (!place_piece(board,**pieces, pos))
+		while (!place_piece(board,*pieces, pos))
 		{
 			if(++pos > board->lpos)
 				return (0);
@@ -50,5 +50,5 @@ void	solver(Piece_c **pieces, int npieces)
 	board = make_board(npieces);
 	while(!rec_solver(board, pieces))
 		resize_board(board);
-	print_board(*board);
+	print_board(*board, pieces);
 }

@@ -6,7 +6,7 @@
 /*   By: sbogar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 21:49:14 by sbogar            #+#    #+#             */
-/*   Updated: 2017/03/12 16:38:15 by bmontoya         ###   ########.fr       */
+/*   Updated: 2017/03/12 18:20:24 by sbogar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,16 @@ void	remove_piece(Board *board, Piece_c piece, int pos)
 	*p = *p ^ p_num;
 }
 
-t_bool	place_piece(Board *board, Piece_c piece, int pos)
+t_bool	place_piece(Board *board, Piece_c *piece, int pos)
 {
 	uint64_t *p;
 	uint64_t p_num;
 
-	p_num = piece.id << (pos % BOARD_SIZE);
+	p_num = piece->id << (pos % BOARD_SIZE);
 	p = (uint64_t*)(board->s + (pos / BOARD_SIZE));
 	if (~(*p ^ p_num) & (*p | p_num))
 		return (0);
+	piece->bpos = pos;
 	*p = *p | p_num;
 	return (1);
 }
@@ -60,26 +61,51 @@ void	resize_board(Board *board)
 	board->s[rows] &=  ~0 ^ ((1 << board->dim) - 1);
 	(*board).lpos = (board->dim - 1) + (BOARD_SIZE * (board->dim - 1));
 }
-void	print_board(Board board)
+
+void	print_board(Board board, Piece_c **pieces)
 {
-	int		i = 0;
-	char	byte[BOARD_SIZE + 1];
-	int 	subi;
-	byte[board.dim] = '\0';
-	while (i < board.dim)
+	int		i;
+	int		pounds;
+	int		pos;
+	char	*res;
+	Board	*tmp;
+
+	i = 0;
+	pos = 0;
+	tmp = (Board*)malloc(sizeof(board));
+	set_board_dim(tmp, board.dim); 
+	res = (char*)malloc(sizeof(char) * (board.dim) * (board.dim));
+	ft_memset(res, '.', (board.dim) * (board.dim));
+	res[(board.dim) * (board.dim)] = 0;
+	while (pieces[i])
 	{
-		if (i)
-			ft_putchar('\n');
-		subi = 0;
-		while (subi < board.dim)
+		pounds = 0;
+		pos = 0;
+		place_piece(tmp, pieces[i], pieces[i]->bpos);
+		while(pounds != 4)
 		{
-			byte[subi++] = (board.s[i] % 2) ? '#' : '.';
-			board.s[i] >>= 1;
+			if (!((tmp->s[pos / board.dim]>>(pos % board.dim)) % 2))
+			{
+				pos++;
+			}
+			else
+			{
+				pounds++;
+				res[pos] = pieces[i]->let;
+				pos++;
+			}
 		}
-		ft_putstr(byte);
+		remove_piece(tmp, *pieces[i], pieces[i]->bpos);
 		i++;
 	}
-	ft_putchar('\n');
+	i = 0;
+	while (res[i])
+	{
+		ft_putchar(res[i]);
+			i++;
+		if (i % board.dim == 0)
+			ft_putchar('\n');
+	}
 }
 
 t_bool	compare_board(Board *board)
@@ -112,5 +138,6 @@ Board	*make_board(int npieces)
 	(*board).dim = initsize;
 	(*board).lpos = (initsize - 1) + (BOARD_SIZE * (initsize - 1));
 	(*board).solved = 0;
+	board->npieces = npieces;
 	return (board);
 }
