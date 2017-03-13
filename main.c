@@ -6,7 +6,7 @@
 /*   By: bmontoya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/08 00:46:30 by bmontoya          #+#    #+#             */
-/*   Updated: 2017/03/12 19:17:09 by bmontoya         ###   ########.fr       */
+/*   Updated: 2017/03/12 19:36:47 by bmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,14 @@
 **               佛祖保佑         永无BUG
 */
 
+t_bool	error(int flag)
+{
+	if (!flag)
+		ft_putendl("error");
+	else if (flag == 2)
+		ft_putendl("usage: fillit source_file");
+	return (flag);
+}
 Piece_c	*make_unique_piece_c(Piece *piece, int pn)
 {
 	Piece_c *c_piece;
@@ -119,8 +127,8 @@ int		main(int argc, char **argv)
 	{
 		make_hash();
 		if (!(file = open(argv[1], O_RDONLY)))
-			return (0);
-		return (read_file(pieces, file));
+			return (error(0));
+		return (error(read_file(pieces, file)));
 	}
-	return (0);
+	return (error(2));
 }
