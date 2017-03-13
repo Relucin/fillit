@@ -6,7 +6,7 @@
 /*   By: bmontoya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/08 00:46:30 by bmontoya          #+#    #+#             */
-/*   Updated: 2017/03/12 16:30:18 by bmontoya         ###   ########.fr       */
+/*   Updated: 2017/03/12 19:17:09 by bmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,32 +85,42 @@ Piece_c	*tetrimino_check(char *tet, int rd, int pn)
 	return (make_unique_piece_c(ft_hash_search(val), pn));
 }
 
+t_bool	read_file(Piece_c **pieces, int file)
+{
+	int		rd;
+	char	tet[BUF];
+	int		pn;
+
+	make_hash();
+	pn = 0;
+	while ((rd = read(file, tet, BUF - 1)) == BUF - 1)
+	{
+		if (pn >= 26 || !(pieces[pn] = tetrimino_check(tet, rd, pn)))
+			return (0);
+		++pn;
+	}
+	if (rd == BUF - 2)
+	{
+		if (pn >= 26 || !(pieces[pn] = tetrimino_check(tet, rd, pn)))
+			return (0);
+		pieces[++pn] = 0;
+		solver(pieces, pn);
+	}
+	return (1);
+}
+
 int		main(int argc, char **argv)
 {
-	char	tet[BUF];
 	Piece_c	**pieces;
-	int		pn;
 	int		file;
-	int		rd;
 
 	pieces = (Piece_c**)malloc(sizeof(*pieces) * 27);
-	pn = 0;
 	if (argc == 2)
 	{
 		make_hash();
-		file = open(argv[1], O_RDONLY);//TODO Throw an error
-		while ((rd = read(file, tet, BUF - 1)) == BUF - 1)
-		{
-			if (!(pieces[pn] = tetrimino_check(tet, rd, pn)))
-				return (0);
-			++pn;
-		}
-		if (rd == BUF - 2)
-		{
-			if (!(pieces[pn] = tetrimino_check(tet, rd, pn)))//TODO Check that pn <= 26
-				return (0);
-			pieces[++pn] = 0;
-			solver(pieces, pn);
-		}
+		if (!(file = open(argv[1], O_RDONLY)))
+			return (0);
+		return (read_file(pieces, file));
 	}
+	return (0);
 }
