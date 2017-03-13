@@ -6,7 +6,7 @@
 /*   By: bmontoya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 22:55:40 by bmontoya          #+#    #+#             */
-/*   Updated: 2017/03/12 18:40:04 by sbogar           ###   ########.fr       */
+/*   Updated: 2017/03/12 20:08:51 by bmontoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,5 @@ void	resize_board(Board *board);
 void	remove_piece(Board *board, Piece_c piece, int pos);
 t_bool	compare_board(Board *board);
 void	make_hash(void);
+void	set_board_dim(Board *board, int dim);
 #endif
