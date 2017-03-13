@@ -6,7 +6,7 @@
 /*   By: bmontoya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 22:55:40 by bmontoya          #+#    #+#             */
-/*   Updated: 2017/03/12 16:53:05 by sbogar           ###   ########.fr       */
+/*   Updated: 2017/03/12 18:40:04 by sbogar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct	board {
 	int					solved;
 	unsigned short		ss[BOARD_SIZE];
 }				Board;
+void	set_board_dim(Board *board, int dim);
 Piece *map[HASH_SIZE];
 void	ft_hash_insert(int key, uint64_t id);
 Piece	*ft_hash_search(int key);
