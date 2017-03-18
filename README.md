@@ -1,0 +1,2 @@
+# fillit
+make && ./fillit file
